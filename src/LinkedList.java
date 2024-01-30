@@ -106,10 +106,24 @@ public class LinkedList {
         return indexOf(item) != -1;
     }
 
+    public void reverse(){
+        if (size <= 1)
+            return;
+        last = first;
+        Node current = first.next;
+        while (current != null){
+            Node nextNode = current.next;
+            current.next = first;
+            first = current;
+            current = nextNode;
+        }
+        last.next = null;
+    }
+
     public void print(){
         Node current = first;
         System.out.print("[");
-        for (int i = 0; i < size; i++){
+        while (current != null){
             System.out.print(" ");
             System.out.print(current.value);
             current = current.next;
