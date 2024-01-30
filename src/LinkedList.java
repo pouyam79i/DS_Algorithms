@@ -131,4 +131,22 @@ public class LinkedList {
         System.out.println(" ]");
     }
 
+    public int kthFromTheEnd(int kthFromTheEnd){
+        if (kthFromTheEnd == 0){
+            return last.value;
+        }
+        Node kth = first;
+        Node finalNode = first;
+        for (int i=0; i < kthFromTheEnd; i++){
+            finalNode = finalNode.next;
+            if (finalNode == null){
+                throw new IndexOutOfBoundsException();
+            }
+        }
+        while (finalNode != last){
+            finalNode = finalNode.next;
+            kth = kth.next;
+        }
+        return kth.value;
+    }
 }
