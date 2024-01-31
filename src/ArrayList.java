@@ -20,6 +20,7 @@ public class ArrayList {
             for (int i = 0; i < count; i++){
                 newArray[i] = array[i];
             }
+            array = newArray;
         }
         array[count] = item;
         count++;
@@ -40,15 +41,17 @@ public class ArrayList {
         return array[index];
     }
 
-    public void removeAt(int index){
+    public int removeAt(int index){
         if (index < 0 || index >= count){
             throw new IndexOutOfBoundsException();
         }
+        int item = array[index];
         for (int i = index; i < count; i++){
             if ((i + 1) < count)
                 array[i] = array[i+1];
         }
         count--;
+        return item;
     }
 
     // search by item
@@ -76,6 +79,10 @@ public class ArrayList {
         // using sorting and two pointer O(M*LogM + M*LogN)
         // naive is worst case which is O(N^2) - not good
         // TODO: intersect two arrays
+    }
+
+    public int size(){
+        return count;
     }
 
     public void print(){
