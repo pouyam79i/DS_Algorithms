@@ -1,3 +1,5 @@
+import java.util.EmptyStackException;
+
 public class ArrayList {
 
     private int[] array;
@@ -21,6 +23,13 @@ public class ArrayList {
         }
         array[count] = item;
         count++;
+    }
+
+    public void insertAt(int index, int item){
+        if (index < 0 || index >= count){
+            throw new IndexOutOfBoundsException();
+        }
+        array[index] = item;
     }
 
     // search item by index
@@ -48,6 +57,25 @@ public class ArrayList {
             if (array[i] == item) return  i;
         }
         return -1;
+    }
+
+    public int max(){
+        if (count == 0){
+            throw new EmptyStackException();
+        }
+        int max = array[0];
+        for (int i = 0; i < count; i++){
+            if (max < array[i])
+                max = array[i];
+        }
+        return max;
+    }
+
+    public void intersect(int[] anotherArray){
+        // using set makes it linear time O(N+M)
+        // using sorting and two pointer O(M*LogM + M*LogN)
+        // naive is worst case which is O(N^2) - not good
+        // TODO: intersect two arrays
     }
 
     public void print(){
