@@ -7,26 +7,22 @@ public class Stack {
     private final List<Character> leftBrackets  = Arrays.asList('(','[', '<', '{');
     private final List<Character> rightBrackets = Arrays.asList(')',']', '>', '}');
 
-    private ArrayList stk;
+    private LinkedList stk;
 
     public Stack(){
-        stk = new ArrayList(2);
+        stk = new LinkedList();
     }
 
     public void push(int item){
-        stk.insert(item);
+        stk.addFirst(item);
     }
 
     public int pop(){
-        if (empty())
-            throw new EmptyStackException();
-        return stk.removeAt(stk.size() - 1);
+        return stk.removeFirst();
     }
 
     public int peek(){
-        if (empty())
-            throw new EmptyStackException();
-        return stk.getItemByIndex(stk.size() - 1);
+        return stk.peekFirst();
     }
 
     public boolean empty(){
