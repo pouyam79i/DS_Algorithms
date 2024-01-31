@@ -149,4 +149,45 @@ public class LinkedList {
         }
         return kth.value;
     }
+
+    public void printMiddleElement(){
+        Node mid, forward;
+        mid = forward = first;
+        if (forward == null){
+            System.out.println("{}");
+            return;
+        }
+        boolean isEven = false;
+        while (forward.next != null){
+            forward = forward.next;
+            if (forward.next == null){
+                isEven = true;
+                break;
+            }
+            forward = forward.next;
+            mid = mid.next;
+        }
+        System.out.print("{");
+        System.out.print(mid.value);
+        if (isEven){
+            System.out.print("," + mid.next.value);
+        }
+        System.out.println("}");
+    }
+
+    public boolean hasLoop(){
+        Node fast, slow;
+        fast = slow = first;
+        while (fast != null){
+            fast = fast.next;
+            if (fast == null)
+                break;
+            fast = fast.next;
+            if(slow == fast)
+                return true;
+            slow = slow.next;
+        }
+        return false;
+    }
+
 }
