@@ -40,15 +40,7 @@ public class LinkedList {
             last = newNode;
         }
         else {
-            Node current = first;
-            if (current == last){
-                first.next = newNode;
-            }else{
-                while (current.next != null){
-                    current = current.next;
-                }
-                current.next = newNode;
-            }
+            last.next = newNode;
             last = newNode;
         }
         size++;
