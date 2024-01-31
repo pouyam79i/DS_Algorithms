@@ -46,10 +46,11 @@ public class LinkedList {
         size++;
     }
 
-    public void removeFirst() {
+    public int removeFirst() {
         if (size == 0){
             throw new EmptyStackException();
         }
+        int value = first.value;
         if (size == 1){
             first = last = null;
         } else if (size > 1) {
@@ -58,6 +59,7 @@ public class LinkedList {
             first = nextNode;
         }
         size--;
+        return value;
     }
 
     public void removeAt(int index){
@@ -94,6 +96,13 @@ public class LinkedList {
         return -1;
     }
 
+    public int peekFirst(){
+        if (first == null){
+            throw new EmptyStackException();
+        }
+        return first.value;
+    }
+
     public boolean contains(int item){
         return indexOf(item) != -1;
     }
@@ -110,6 +119,10 @@ public class LinkedList {
             current = nextNode;
         }
         last.next = null;
+    }
+
+    public int size(){
+        return size;
     }
 
     public void print(){
