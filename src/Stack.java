@@ -7,30 +7,72 @@ public class Stack {
     private final List<Character> leftBrackets  = Arrays.asList('(','[', '<', '{');
     private final List<Character> rightBrackets = Arrays.asList(')',']', '>', '}');
 
-    private LinkedList stk;
+    private int[] array;
+    private int ptr1;
+    private int ptr2;
 
-    public Stack(){
-        stk = new LinkedList();
+    public Stack(int size){
+        if (size < 1)
+            size = 1;
+        array = new int[size];
+        ptr1 = -1;
+        ptr2 = size;
+   }
+
+   public void push1(int item){
+        if (ptr1 + 1 == ptr2){
+            throw new StackOverflowError();
+        }
+        ptr1++;
+        array[ptr1] = item;
+   }
+
+    public void push2(int item){
+        if (ptr2 - 1 == ptr1){
+            throw new StackOverflowError();
+        }
+        ptr2--;
+        array[ptr2] = item;
     }
 
-    public void push(int item){
-        stk.addFirst(item);
+    public int pop1(){
+        if (ptr1 < 0){
+            throw new EmptyStackException();
+        }
+        return array[ptr1--];
     }
 
-    public int pop(){
-        return stk.removeFirst();
+    public int pop2(){
+        if (ptr2 == array.length){
+            throw new EmptyStackException();
+        }
+        return array[ptr2++];
     }
 
-    public int peek(){
-        return stk.peekFirst();
+    public int peek1(){
+        if (ptr1 < 0){
+            throw new EmptyStackException();
+        }
+        return array[ptr1];
     }
 
-    public boolean empty(){
-        return stk.size() == 0;
+    public int peek2(){
+        if (ptr2 == array.length){
+            throw new EmptyStackException();
+        }
+        return array[ptr2];
     }
 
-    public void print(){
-        stk.print();
+    public boolean isFull(){
+        return (ptr1 + 1) == ptr2;
+    }
+
+    public boolean empty1(){
+        return ptr1 < 0;
+    }
+
+    public boolean empty2(){
+        return ptr2 == array.length;
     }
 
     public String SeverseString(String s){
