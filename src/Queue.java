@@ -3,60 +3,66 @@ import java.util.EmptyStackException;
 
 public class Queue {
 
-    private int[] array;
-    private int front, back, count;
-
-    public Queue(int size){
-        if (size < 1)
-            size = 1;
-        array = new int[size];
-        count = 0;
-        front = -1;
-        back = -1;
+    private class Node {
+        private int value;
+        private Node next;
+        public Node(int value){
+            this.value = value;
+        }
     }
 
-    public void enqueue(int item){
-        if (count == array.length)
-            throw new StackOverflowError();
-        if (front == -1){
-            front = back = 0;
-            array[0] = item;
-        }
-        else{
-            back++;
-            back %= array.length;
-            array[back] = item;
+    private Node front, back;
+    private int count;
+
+    public Queue(){
+        front = back = null;
+        count = 0;
+    }
+
+    public void enqueue(int value){
+        Node newNode = new Node(value);
+        if (front == null){
+            front = back = newNode;
+        }else {
+            back.next = newNode;
+            back = newNode;
         }
         count++;
     }
 
     public int dequeue(){
-        if (count == 0)
+        if (isEmpty())
             throw new EmptyStackException();
-        int item = array[front];
-        array[front] = 0;
-        if (back == front){
-            back = front = -1;
-        }else {
-            front++;
-            front %= array.length;
+        var v = front.value;
+        if(front == back){
+            front = back = null;
+        }else{
+            Node previous = front;
+            front = previous.next;
+            previous.next = null;
         }
         count--;
-        return item;
+        return v;
     }
 
     public int peek(){
-        if (count == 0)
+        if (isEmpty())
             throw new EmptyStackException();
-        return array[front];
+        return front.value;
     }
 
-    public int size(){
-        return count;
+    public boolean isEmpty(){
+        return count == 0;
     }
 
     public void print(){
-        System.out.println(Arrays.toString(array));
+        Node current = front;
+        System.out.print("[");
+        while (current != null){
+            System.out.print(" " + current.value);
+            current = current.next;
+        }
+        System.out.println(" ]");
     }
 
 }
