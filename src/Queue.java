@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.EmptyStackException;
+import java.util.Stack;
 
 public class Queue {
 
@@ -53,6 +54,20 @@ public class Queue {
 
     public boolean isEmpty(){
         return count == 0;
+    }
+
+    public void reverseFirstKthElement(int kth){
+        // O(k+n)
+        if (kth < 1) return;
+        if (kth > count) throw new IllegalStateException();
+        Stack<Integer> stack = new Stack<>();
+        int restOfQ = count - kth;
+        for (int i = 0; i < kth; i++)
+            stack.push(dequeue());
+        for (int i = 0; i < kth; i++)
+            enqueue(stack.pop());
+        for (int i = 0; i < restOfQ; i++)
+            enqueue(dequeue());
     }
 
     public void print(){
