@@ -72,4 +72,50 @@ public class HashTables {
         return key % table.length;
     }
 
+//    other practices
+    public void findMostRepeatedChar(String input){
+        if (input == null || input.isEmpty()){
+            return;
+        }
+        HashMap<Character, Integer> map = new HashMap<>();
+        int repTime = 0;
+        char mostRepChar = ' ';
+        for (char ch : input.toCharArray()){
+            if (ch == ' ') continue;
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
+            if (repTime < map.get(ch)){
+                if (ch != mostRepChar){
+                    mostRepChar = ch;
+                }
+                repTime = map.get(ch);
+            }
+        }
+        System.out.println("Most rep char: " + mostRepChar + " rep times: " + repTime);
+    }
+
+    public void countPairsWithDiff(int[] array, int diff){
+        if (array == null || array.length == 0){
+            return;
+        }
+        HashMap<Integer, Boolean> map = new HashMap<>();
+        int count = 0;
+        LinkedList<String> pairs = new LinkedList<>();
+
+        // adding items to the set
+        for (int i : array) map.put(i, false);
+
+        for (int i : array) {
+            if (!map.get(i)){
+                if (map.containsKey(i+diff)){
+                    map.put(i, true);
+                    count++;
+                    pairs.add("(" + i + ", " + (i+diff) + ")");
+                }
+            }
+        }
+
+        System.out.println("Total Pairs: " + count);
+        System.out.println(pairs);
+    }
+
 }
