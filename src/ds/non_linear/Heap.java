@@ -17,8 +17,25 @@ public class Heap {
         if (isFull())
             throw new IllegalStateException();
 
-        int child = count++;
-        heap[child] = value;
+        heap[count++] = value;
+        bubbleUp();
+    }
+
+    public int remove(){
+        if (isEmpty())
+            throw new IllegalStateException();
+
+        int max = heap[0];
+        count--;
+        heap[0] = heap[count];
+        heap[count] = 0;
+
+        bubbleDown();
+        return max;
+    }
+
+    private void bubbleUp(){
+        int child = count - 1;
         if (child == 0) return;
 
         // bubble up
@@ -28,15 +45,7 @@ public class Heap {
         }
     }
 
-    public int remove(){
-        if (isEmpty())
-            throw new IllegalStateException();
-
-        int max = heap[0];
-        count--;
-
-        heap[0] = heap[count];
-        heap[count] = 0;
+    private void bubbleDown(){
         int parentIndex = 0;
         int maxChildIndex  = child(parentIndex);
 
@@ -51,7 +60,6 @@ public class Heap {
             parentIndex = maxChildIndex;
             maxChildIndex = child(parentIndex);
         }
-        return max;
     }
 
     private int parent(int child){
