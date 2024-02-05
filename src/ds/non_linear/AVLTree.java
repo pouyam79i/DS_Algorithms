@@ -17,10 +17,12 @@ public class AVLTree {
     }
 
     private AVLNode root;
+    private int size;
 
     // insert with recursion implementation :)
     private AVLNode insert(AVLNode root, int value){
         if (root == null){
+            size++;
             return new AVLNode(value);
         }
 
@@ -101,6 +103,19 @@ public class AVLTree {
     private int balanceFactor(AVLNode root){
         if (root == null) return 0;
         return height(root.left) - height(root.right);
+    }
+
+    private boolean isBalanced(AVLNode root){
+        if (root == null) return true;
+        return Math.abs(balanceFactor(root)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    public boolean isBalanced(){
+        return isBalanced(root);
+    }
+
+    public boolean isPerfect(){
+        return (Math.pow(2, height(root) + 1) - 1) == size;
     }
 
 }
