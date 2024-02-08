@@ -68,6 +68,29 @@ public class Trie {
         return current.isEndOfWord;
     }
 
+    private boolean containsRecursive(Node root, String word, int index){
+
+        if(index == word.length())
+            return root.isEndOfWord;
+
+        var ch = word.charAt(index);
+        var child = root.getChild(ch);
+
+        if (child == null)
+            return false;
+
+        if(child.value != ch)
+            return false;
+
+        return containsRecursive(child, word, index+1);
+    }
+
+    public boolean containsRecursive(String word){
+        if (word == null || word.isEmpty())
+            return false;
+        return containsRecursive(root, word, 0);
+    }
+
 
     private void remove(Node root, String word, int index){
         if (index == word.length()){
@@ -111,5 +134,48 @@ public class Trie {
         return suggestions;
     }
 
+    public int countWords(){
+        return countWords(root);
+    }
+
+    private int countWords(Node root){
+        int total = 0;
+
+        if(root.isEndOfWord)
+            total++;
+
+        for (var child : root.getChildren())
+            total += countWords(child);
+
+        return total;
+    }
+
+    private String getLongestPrefix(int shortestLength){
+        StringBuilder prefix = new StringBuilder();
+        var current = root;
+        int count = 0;
+        while (current.getChildren().length == 1){
+            if (count == shortestLength)
+                break;
+            current = current.getChildren()[0];
+            prefix.append(current.value);
+            count++;
+        }
+        return prefix.toString();
+    }
+
+    public static String longestPrefix(String[] words){
+        if (words == null || words.length == 0)
+            return "";
+        Trie trie = new Trie();
+        int shortestLen = Integer.MAX_VALUE;
+        for (var word : words){
+            if (word == null || word.isEmpty()) return "";
+            if (word.length() < shortestLen)
+                shortestLen = word.length();
+            trie.insert(word);
+        }
+        return trie.getLongestPrefix(shortestLen);
+    }
 
 }
