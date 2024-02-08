@@ -71,11 +71,15 @@ public class Heap {
     }
 
     private void swap(int first, int second){
+        swap(heap, first, second);
+    }
+
+    private void swap(int[] array, int first, int second){
         if (first < 0 || second < 0) return;
 
-        heap[first] += heap[second];
-        heap[second] = heap[first] - heap[second];
-        heap[first] -= heap[second];
+        array[first] += array[second];
+        array[second] = array[first] - array[second];
+        array[first] -= array[second];
     }
 
     public int size(){
@@ -92,6 +96,45 @@ public class Heap {
 
     public boolean isEmpty(){
         return count == 0;
+    }
+
+
+
+    public static void heapify(int[] array){
+        if (array == null || array.length <= 1) return;
+        int lastParent = (array.length/2) - 1;
+
+        int parent;
+        int leftChild;
+        int rightChild;
+        int maxChild;
+        int swap;
+
+        for (int i = lastParent; i >= 0; i--){
+
+            for (int j = i; j < array.length;){
+
+                // find max child index
+                leftChild = j * 2 + 1;
+                if (leftChild >= array.length) break;
+                rightChild = leftChild + 1;
+                maxChild = leftChild;
+                if (rightChild < array.length && array[rightChild] > array[leftChild]){
+                    maxChild = rightChild;
+                }
+
+                // swap if child is greater
+                if (array[j] < array[maxChild]){
+                    swap = array[j];
+                    array[j] = array[maxChild];
+                    array[maxChild] = swap;
+                }
+
+                j = maxChild;
+            }
+
+        }
+
     }
 
 }
