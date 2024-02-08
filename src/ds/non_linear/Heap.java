@@ -98,6 +98,26 @@ public class Heap {
         return count == 0;
     }
 
+    private static boolean isMaxHeap(int[] array, int index){
+
+        int lastParentIndex = array.length/2 - 1;
+        if (index > lastParentIndex)
+            return true;
+
+        int leftChild = index*2 + 1;
+        int rightChild = index*2 + 2;
+
+        if (array[leftChild] > array[index]) return false;
+        if (rightChild < array.length && array[rightChild] > array[index]) return false;
+
+        return isMaxHeap(array, leftChild) && isMaxHeap(array, rightChild);
+    }
+
+    public static boolean isMaxHeap(int[] array){
+        if (array == null) throw new IllegalStateException();
+        return isMaxHeap(array, 0);
+    }
+
 
 
     public static void heapify(int[] array){
