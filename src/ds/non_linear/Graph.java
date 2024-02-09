@@ -70,13 +70,16 @@ public class Graph {
         edges.get(fromNode).remove(toNode);
     }
 
-    private void traversDepthFirstRecursive(Node root, Set<Node> visited){
-        System.out.println(root);
+    private void traversDepthFirstRecursive(Node root, Set<Node> visited, Stack<Node> topologicalStack){
+
+        if (visited.contains(root)) return;
         visited.add(root);
 
         for (var neighbor : edges.get(root))
             if(!visited.contains(neighbor))
-                traversDepthFirstRecursive(neighbor, visited);
+                traversDepthFirstRecursive(neighbor, visited, topologicalStack);
+
+        topologicalStack.push(root);
     }
 
     private void traversDepthFirstIterative(Node root){
@@ -99,12 +102,8 @@ public class Graph {
         var node = vertices.getOrDefault(start, null);
         if (node == null)
             return;
-        System.out.println("Recursive:");
-        traversDepthFirstRecursive(node, new HashSet<>());
-        System.out.println("Iterative:");
         traversDepthFirstIterative(node);
     }
-
 
     private void traversBreadthFirst(Node root){
         Set<Node> visited = new HashSet<>();
@@ -133,9 +132,53 @@ public class Graph {
         traversBreadthFirst(node);
     }
 
+    public List<Node> topologicalSort(){
+        List<Node> topologicallySortedList = new LinkedList<>();
+        Stack<Node> topologicalStack = new Stack<>();
+        Set<Node> visited = new HashSet<>();
+
+        for (var node : vertices.values())
+            traversDepthFirstRecursive(node, visited, topologicalStack);
+
+        while (!topologicalStack.isEmpty())
+            topologicallySortedList.add(topologicalStack.pop());
+
+        return topologicallySortedList;
+    }
+
+    public boolean hasCycle(){
+        Set<Node> all = new HashSet<>(vertices.values());
+        Set<Node> visiting = new HashSet<>();
+        Set<Node> visited = new HashSet<>();
+
+        while (!all.isEmpty()){
+            Node current = all.iterator().next();
+            if(hasCycle(current, all, visiting, visited))
+                return true;
+        }
+
+        return false;
+    }
+
+    private boolean hasCycle(Node node, Set<Node> all, Set<Node> visiting, Set<Node> visited){
+        all.remove(node);
+        visiting.add(node);
+        for (var neighbor : edges.get(node)){
+            if(visited.contains(neighbor))
+                continue;
+
+            if (visiting.contains(neighbor))
+                return true;
+
+            if(hasCycle(neighbor, all, visiting, visited))
+                return true;
+        }
+        visited.add(node);
+        return false;
+    }
+
     public void print(){
         for (var node : vertices.values().toArray(new Node[0]))
             System.out.println(node + " is connected to " + edges.get(node));
     }
-
 }
