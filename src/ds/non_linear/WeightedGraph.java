@@ -1,0 +1,138 @@
+package ds.non_linear;
+
+import utils.Path;
+
+import java.util.*;
+
+public class WeightedGraph {
+    private class Node{
+        private String label;
+        private List<Edge> edges;
+        public Node(String label){
+            this.label = label;
+            edges = new LinkedList<>();
+        }
+        public void addEdge(Node to, Integer weight){
+            edges.add(new Edge(this, to, weight));
+        }
+        public List<Edge> getEdgesList(){
+            return edges;
+        }
+        @Override
+        public String toString(){
+            return label;
+        }
+    }
+
+    private class Edge{
+        private Node from;
+        private Node to;
+        private int weight;
+        public Edge(Node from, Node to, int weight) {
+            this.from = from;
+            this.to = to;
+            this.weight = weight;
+        }
+        @Override
+        public String toString() {
+            return from + "->" + to + ":" + weight;
+        }
+    }
+
+    private class NodeEntry{
+        private Node node;
+        private int priority;
+        public NodeEntry(Node node, int priority) {
+            this.node = node;
+            this.priority = priority;
+        }
+    }
+
+    private Map<String, Node> vertices;
+
+    public WeightedGraph(){
+        vertices = new HashMap<>();
+    }
+
+    public void addNode(String label){
+        if (!vertices.containsKey(label)){
+            var newNode = new Node(label);
+            vertices.put(label, newNode);
+        }
+    }
+
+    public void addEdge(String from, String to, int weight){
+        var fromNode = vertices.get(from);
+        var toNode = vertices.get(to);
+        if(fromNode == null || toNode == null)
+            throw new IllegalArgumentException();
+
+        fromNode.addEdge(toNode, weight);
+        toNode.addEdge(fromNode, weight);
+    }
+
+    // implementing dijkstra algorithm.
+    // assume weights must be >= 0,
+    // no self cycle,
+    // it is undirected but between 2 nodes we have only one edge.
+    public Path shortestPathDistance(String from, String to){
+        var fromNode = vertices.get(from);
+        var toNode = vertices.get(to);
+        if(fromNode == null || toNode == null)
+            throw new IllegalArgumentException();
+
+        // start node table
+        Map<Node, Integer> distance = new HashMap<>();
+        Map<Node, Node> previousNode = new HashMap<>();
+        Set<Node> visited = new HashSet<>();
+
+        // pq
+        PriorityQueue<NodeEntry> queue = new PriorityQueue<>(
+                Comparator.comparing(ne -> ne.priority)
+        );
+
+        // find path
+        int priority = 0;
+        queue.add(new NodeEntry(fromNode, 0));
+        distance.put(fromNode, 0);
+
+        while (!queue.isEmpty()){
+            var current = queue.remove().node;
+            visited.add(current);
+            for (var edges : current.getEdgesList()){
+                if (!visited.contains(edges.to)){
+                    queue.add(new NodeEntry(edges.to, priority + 1));
+                    var newDistance = edges.weight + distance.get(current);
+                    if (newDistance < distance.getOrDefault(edges.to, Integer.MAX_VALUE)){
+                        distance.put(edges.to, newDistance);
+                        previousNode.put(edges.to, current);
+                    }
+                }
+            }
+            priority++;
+        }
+
+        // build path
+        return buildPath(toNode, previousNode);
+    }
+
+    private Path buildPath(Node target, Map<Node, Node> previousNode){
+        Path path = new Path();
+        Stack<Node> stack = new Stack<>();
+        for(var current = target; current != null;){
+            stack.push(current);
+            current = previousNode.getOrDefault(current, null);
+        }
+
+        while (!stack.isEmpty())
+            path.add(stack.pop().label);
+
+        return path;
+    }
+
+    public void print(){
+        for (var node : vertices.values().toArray(new Node[0]))
+            System.out.println(node + " is connected to " + node.getEdgesList());
+    }
+
+}

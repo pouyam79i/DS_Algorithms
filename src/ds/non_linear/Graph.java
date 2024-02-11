@@ -20,10 +20,6 @@ public class Graph {
     private Map<String, Node> vertices;
     // edges of graph
     private Map<Node, List<Node>> edges;
-    // number of vertices
-    private int v;
-    // number of edges
-    private int e;
 
     public Graph(){
         vertices = new HashMap<>();
