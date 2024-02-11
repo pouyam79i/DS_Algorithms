@@ -71,6 +71,37 @@ public class WeightedGraph {
         toNode.addEdge(fromNode, weight);
     }
 
+    public boolean hasCycle(){
+
+        Set<Node> all = new HashSet<>(vertices.values());
+        Set<Node> visited = new HashSet<>();
+
+        while (!all.isEmpty())
+            if(hasCycle(all.iterator().next(), null, all, visited))
+                return true;
+
+        return false;
+    }
+
+    private boolean hasCycle(Node root, Node parent, Set<Node> all, Set<Node> visited){
+        if (visited.contains(root))
+            return  false;
+        visited.add(root);
+        all.remove(root);
+
+        for (var edge : root.getEdgesList()){
+            var neighbor = edge.to;
+            if (neighbor == parent)
+                continue;
+            if(visited.contains(neighbor))
+                return true;
+            if(hasCycle(neighbor, root, all, visited))
+                return true;
+        }
+
+        return false;
+    }
+
     // implementing dijkstra algorithm.
     // assume weights must be >= 0,
     // no self cycle,
