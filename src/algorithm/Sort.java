@@ -27,6 +27,15 @@ public class Sort {
         }
     }
 
+    public static void insertionSort(int[] array){
+        for (int i = 0; i < array.length; i++)
+            for (int j = i; j > 0; j--)
+                if (array[j-1] > array[j])
+                    swap(j-1, j, array);
+                else
+                    break;
+    }
+
     private static void swap(int first, int second, int[] array){
         if (first == second)
             return;
