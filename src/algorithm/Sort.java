@@ -57,6 +57,37 @@ public class Sort {
         merge(left, right, array);
     }
 
+
+    public static void quickSort(int[] array){
+        quickSortPartition(0, array.length-1, array);
+    }
+
+    private static void quickSortPartition(int begin, int end, int[] array){
+        if (begin >= end)
+            return;
+
+        // select last index as pivot
+        int piv = end;
+
+        // partition
+        piv = partition(begin, end, piv, array);
+
+        // sort each part
+        quickSortPartition(begin, piv-1, array);
+        quickSortPartition(piv+1, end, array);
+    }
+
+    private static int partition(int begin, int end, int piv, int[] array){
+        int boundary = begin - 1;
+
+        for(int i = begin; i <= end; i++)
+            if (array[i] <= array[piv])
+                swap(i , ++boundary, array);
+
+        return boundary;
+    }
+
+
     private static void merge(int[] left, int[] right, int[] res){
         int i, j, k;
         i=j=k=0;
