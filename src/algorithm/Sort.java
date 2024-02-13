@@ -62,6 +62,35 @@ public class Sort {
         quickSortPartition(0, array.length-1, array);
     }
 
+    public static void countingSort(int[] array){
+        // find range;
+        int minValue = Integer.MAX_VALUE, maxValue = Integer.MIN_VALUE;
+        for (var item : array){
+            if (item < minValue)
+                minValue = item;
+            if (item > maxValue)
+                maxValue = item;
+        }
+
+        // manage range;
+        int range = maxValue - minValue + 1;
+        if (range == 1)
+            return;
+
+        // count
+        int[] countingArray = new int[range];
+        for (var item : array)
+            countingArray[item - minValue]++;
+
+        // sort
+        int k = 0, i;
+        for (int j = 0; j < countingArray.length; j++)
+            for (i = 0; i < countingArray[j]; i++)
+                array[k++] = j+minValue;
+    }
+
+
+
     private static void quickSortPartition(int begin, int end, int[] array){
         if (begin >= end)
             return;
@@ -86,7 +115,6 @@ public class Sort {
 
         return boundary;
     }
-
 
     private static void merge(int[] left, int[] right, int[] res){
         int i, j, k;
