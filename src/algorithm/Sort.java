@@ -1,7 +1,10 @@
 package algorithm;
 
-public class Sort {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+public class Sort {
     public static void bubbleSort(int[] array){
         boolean isSorted;
         for (int i=0; i < array.length; i++){
@@ -57,7 +60,6 @@ public class Sort {
         merge(left, right, array);
     }
 
-
     public static void quickSort(int[] array){
         quickSortPartition(0, array.length-1, array);
     }
@@ -89,7 +91,23 @@ public class Sort {
                 array[k++] = j+minValue;
     }
 
+    public static void bucketSort(int[] array, int max_bucket){
+        int k = 0;
+        for(var bucket : createBucket(array, max_bucket)){
+            Collections.sort(bucket);
+            for (var item: bucket)
+                array[k++] = item;
+        }
+    }
 
+    private static List<List<Integer>> createBucket(int[] array, int number){
+        List<List<Integer>> buckets = new ArrayList<>();
+        for (int i = 0; i < number; i++)
+            buckets.add(new ArrayList<>());
+        for (var item : array)
+            buckets.get(item/number).add(item);
+        return buckets;
+    }
 
     private static void quickSortPartition(int begin, int end, int[] array){
         if (begin >= end)
@@ -139,5 +157,4 @@ public class Sort {
         array[second] = array[first] - array[second];
         array[first] = array[first] - array[second];
     }
-
 }
