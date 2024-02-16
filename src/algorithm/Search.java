@@ -18,6 +18,28 @@ public class Search {
         return ternarySearch(array, target, 0, array.length-1);
     }
 
+    public static int jumpSearch(int[] array, int target){
+        if (array.length == 0)
+            return -1;
+
+        int blockSize = (int) Math.sqrt(array.length);
+        int start=0;
+        int next=0;
+
+        while (start < array.length){
+            next = Math.min(blockSize + start, array.length);
+            if (target <= array[next-1])
+                break;
+            start = next;
+        }
+
+        for (int i = start; i < next; i++)
+            if (target == array[i])
+                return i;
+
+        return -1;
+    }
+
     private static int ternarySearch(int[] array, int target, int begin, int end){
         if (begin > end)
             return -1;

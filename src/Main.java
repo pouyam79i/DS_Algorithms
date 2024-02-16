@@ -8,7 +8,7 @@ public class Main {
         };
 
         System.out.println(
-                Search.binarySearch(array, 1)
+                Search.jumpSearch(array, 5)
         );
     }
 }
