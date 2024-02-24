@@ -8,7 +8,7 @@ public class Main {
         };
 
         System.out.println(
-                Search.jumpSearch(array, 5)
+                Search.exponentialSearch(array, 5)
         );
     }
 }

@@ -40,6 +40,18 @@ public class Search {
         return -1;
     }
 
+    public static int exponentialSearch(int[] array, int target){
+        if (array.length == 0)
+            return -1;
+
+        int bound = 1;
+
+        while (bound < array.length && target > array[bound-1])
+            bound = Math.min(bound*2, array.length);
+
+        return ternarySearch(array, target, bound/2, bound-1);
+    }
+
     private static int ternarySearch(int[] array, int target, int begin, int end){
         if (begin > end)
             return -1;
